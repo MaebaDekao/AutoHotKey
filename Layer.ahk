@@ -237,8 +237,21 @@ SC00D::{
 
 *SC00F::
 SC00F::{ ; Tab
-  global g_SC039
-  if GetKeyState("SC039","p"){
+  global g_SC07B
+  if GetKeyState("SC07B","p"){
+    g_SC07B := false
+    userInput := InputBox("hogePrompt", "hogeTitle", "w100 h100")
+    if userInput.Result = "Cancel"
+      Goto EndUltraLink
+    else {
+      str_url_base := "https://jira.kmt.kmtg.net:8443/jira/browse/B55-"
+      str_url_add := userInput.Value
+      str_url_combined := str_url_base . str_url_add
+      Run str_url_combined
+    }
+  EndUltraLink:
+  }else if GetKeyState("SC039","p"){
+    global g_SC039
     Send "{Blind}~"
     g_SC039 := false
   }else{
@@ -425,9 +438,15 @@ SC020::{ ; d
   if GetKeyState("SC07B","p"){
     g_SC07B := false
     if GetKeyState("Alt"){
-       Send "+{Tab}"
+      if WinActive("ahk_exe mstsc.exe")
+        Send "{PgDn}"
+      else
+        Send "+{Tab}"
     }else{
-       Send "{Alt Down}+{Tab}"
+      if WinActive("ahk_exe mstsc.exe")
+        Send "{Alt Down}{PgDn}"
+      else
+        Send "{Alt Down}+{Tab}"
     }
   }else if GetKeyState("SC039","p"){
     global g_SC039
@@ -443,9 +462,15 @@ SC021::{ ; f
   if GetKeyState("SC07B","p"){
     g_SC07B := false
     if GetKeystate("Alt"){
-      Send "{Tab Down}{Tab Up}"
+      if WinActive("ahk_exe mstsc.exe")
+        Send "{PgUp}"
+      else
+        Send "{Tab Down}{Tab Up}"
     }else{
-      Send "{Alt Down}{Tab Down}{Tab Up}"
+      if WinActive("ahk_exe mstsc.exe")
+        Send "{Alt Down}{PgUp}"
+      else
+        Send "{Alt Down}{Tab Down}{Tab Up}"
     }
   }else if GetKeyState("SC039","p"){
     global g_SC039
