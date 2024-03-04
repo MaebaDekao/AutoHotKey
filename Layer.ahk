@@ -554,7 +554,13 @@ SC027::{ ; - (physical ;)
     g_SC039 := false
     Send "{Blind}{0}"
   }else{
-    Send "{Blind}{SC00C}"
+    if IME_GET() and GetKeyState("SC02A","p"){
+      IME_SET(0)
+      Send "{Blind}{SC00C}"
+      IME_SET(1)
+    }else{
+      Send "{Blind}{SC00C}" ; -
+    }
   }
 }
 +SC028::
