@@ -237,6 +237,16 @@ SC00D::{
 
 *SC00F::
 SC00F::{ ; Tab
+  if GetKeyState("SC039","p"){
+    global g_SC039
+    Send "{Blind}~"
+    g_SC039 := false
+  }else{
+    Send "{Blind}{SC00F}"
+  }
+}
+*SC010::
+SC010::{ ; q
   global g_SC07B
   if GetKeyState("SC07B","p"){
     g_SC07B := false
@@ -251,16 +261,6 @@ SC00F::{ ; Tab
     }
   EndUltraLink:
   }else if GetKeyState("SC039","p"){
-    global g_SC039
-    Send "{Blind}~"
-    g_SC039 := false
-  }else{
-    Send "{Blind}{SC00F}"
-  }
-}
-*SC010::
-SC010::{ ; q
-  if GetKeyState("SC039","p"){
     global g_SC039
     g_SC039 := false
     Send "{Blind}{!}"
