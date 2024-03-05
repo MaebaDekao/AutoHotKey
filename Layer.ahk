@@ -545,7 +545,7 @@ SC026::{ ; l
   }else if GetKeyState("SC039","p"){
     global g_SC039
     g_SC039 := false
-    Send "{9}" ; cannot disable Win+L(screen lock)
+    Send "{Blind}{9}" ; cannot disable Win+L(screen lock)
   }else{
     Send "{Blind}{SC026}"
   }
