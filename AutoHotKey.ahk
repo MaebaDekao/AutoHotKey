@@ -12,8 +12,6 @@ InstallKeybdHook
 Persistent
 
 ;---------------- Hotkey ------------------
-;~ SC::Enter ; Convert (Right of Space Key)
-SC064::Enter ; F13
 SC070::IME_SET(1) ;日本語入力モード
 
 ;---------------- Layer 3 -----------------
