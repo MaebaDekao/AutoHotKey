@@ -20,47 +20,47 @@ SC00F::SC00F ;Tab key
 
 ; TENKEY
 SC00F & SC032::{
-	IME_SET(0)
+	IME_SET_C(0)
 	Send "{Numpad1}"
 	} ;m
 SC00F & SC033::{
-	IME_SET(0)
+	IME_SET_C(0)
 	Send "{Numpad2}"
 	} ;,
 SC00F & SC034::{
-	IME_SET(0)
+	IME_SET_C(0)
 	Send "{Numpad3}"
 	} ;.
 SC00F & SC024::{
-	IME_SET(0)
+	IME_SET_C(0)
 	Send "{Numpad4}"
 	} ;j
 SC00F & SC025::{
-	IME_SET(0)
+	IME_SET_C(0)
 	Send "{Numpad5}"
 	} ;k
 SC00F & SC026::{
-	IME_SET(0)
+	IME_SET_C(0)
 	Send "{Numpad6}"
 	} ;l
 SC00F & SC016::{
-	IME_SET(0)
+	IME_SET_C(0)
 	Send "{Numpad7}"
 	} ;u
 SC00F & SC017::{
-	IME_SET(0)
+	IME_SET_C(0)
 	Send "{Numpad8}"
 	} ;i
 SC00F & SC018::{
-	IME_SET(0)
+	IME_SET_C(0)
 	Send "{Numpad9}"
 	} ;o
 SC00F & SC031::{
-	IME_SET(0)
+	IME_SET_C(0)
 	Send "{Numpad0}"
 	} ;n
 SC00F & SC035::{
-	IME_SET(0)
+	IME_SET_C(0)
 	Send "{NumpadDot}"
 	} ;/
 
@@ -68,6 +68,17 @@ SC00F & SC035::{
 MButton::RWin
 XButton2::PgUp ;thumb UP
 XButton1::PgDn ;thumb DOWN
+
+;----------- Custom Function --------------
+IME_SET_C(flag){
+	if IME_GetConverting(){
+		Send "{Enter}"
+		IME_SET(flag)
+	}else{
+		IME_SET(flag)
+	}
+	return
+}
 
 ;---------------- Memo --------------------
 ; ^ Ctrl
