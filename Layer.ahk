@@ -433,7 +433,7 @@ SC01F::{ ; s
     Send "{Blind}{SC01F}"
   }
 }
-!SC020::
+*SC020::
 SC020::{ ; d
   global g_SC07B
   if GetKeyState("SC07B","p"){
@@ -452,12 +452,15 @@ SC020::{ ; d
   }else if GetKeyState("SC039","p"){
     global g_SC039
     g_SC039 := false
-    Send "{Blind}{3}"
+    if GetKeyState("LWin","p")
+      Send "#{3}"
+    else
+      Send "{3}"
   }else{
     Send "{Blind}{SC020}"
   }
 }
-!SC021::
+*SC021::
 SC021::{ ; f
   global g_SC07B
   if GetKeyState("SC07B","p"){
@@ -542,7 +545,7 @@ SC026::{ ; l
   }else if GetKeyState("SC039","p"){
     global g_SC039
     g_SC039 := false
-    Send "{Blind}{9}"
+    Send "{Blind}{9}" ; cannot disable Win+L(screen lock)
   }else{
     Send "{Blind}{SC026}"
   }
@@ -563,7 +566,6 @@ SC027::{ ; - (physical ;)
     }
   }
 }
-+SC028::
 *SC028::
 SC028::{ ; '
   if GetKeyState("SC039","p"){
