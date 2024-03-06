@@ -42,7 +42,7 @@ g_SC039 := false
 SC039::{ ; Space
   global g_SC07B
   if GetKeyState("SC07B","p"){
-    IME_SET_C(0)
+    IME_SET(0)
     g_SC07B := false
   }else{
     global g_SC039
@@ -557,10 +557,8 @@ SC027::{ ; - (physical ;)
     g_SC039 := false
     Send "{Blind}{0}"
   }else{
-    if IME_GET() and GetKeyState("SC02A","p"){
-      IME_SET_C(0)
-      Send "{Blind}{SC00C}"
-      IME_SET(1)
+    if GetKeyState("SC02A","p"){
+      Send_with_ime_off("{Blind}{SC00C}")
     }else{
       Send "{Blind}{SC00C}" ; -
     }
@@ -575,13 +573,7 @@ SC028::{ ; '
   }else if GetKeyState("SC136","p"){
     Send "{SC029}"
   }else{
-    if IME_GET(){ ;IME ONでも半角"を打つ
-        IME_SET_C(0)
-        Send "{Blind}{SC028}"
-        IME_SET(1)
-    }else{
-        Send "{Blind}{SC028}"
-    }
+    Send_with_ime_off("{Blind}{SC028}")
   }
 }
 *SC02B::
