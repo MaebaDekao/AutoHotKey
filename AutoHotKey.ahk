@@ -12,7 +12,6 @@ InstallKeybdHook
 Persistent
 
 ;---------------- debug. ------------------
-SC136::IME_SetConvMode(0x10)
 
 ;---------------- Hotkey ------------------
 SC070::IME_SET(1) ;日本語入力モード
