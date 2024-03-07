@@ -470,7 +470,7 @@ SC020::{ ; d
     if GetKeyState("LWin","p")
       Send "#{3}"
     else
-      Send "{3}"
+      Send "{Blind}{3}"
   }else{
     Send "{Blind}{SC020}"
   }
