@@ -338,9 +338,14 @@ SC010::{ ; q
 }
 *SC011::
 SC011::{ ; w
-  Override_with_layer_key("{Blind}{SC011}",
-                          "{Blind}{SC011}",
-                          "{Blind}{@}")
+  if GetKeyState("SC039","p"){
+    global g_SC039
+    g_SC039 := false
+    IME_SET_C(0)
+    Send "{Blind}{@}"
+  }else{
+    Send "{Blind}{SC011}"
+  }
 }
 *SC012::
 SC012::{ ; e
