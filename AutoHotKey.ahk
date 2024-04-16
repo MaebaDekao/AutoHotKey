@@ -23,6 +23,10 @@ XButton1::PgDn ;thumb DOWN
 
 ;----------- Custom Function --------------
 
+;----------- Custom Function --------------
+F13::IME_SET(0)
+F14::IME_SET(1)
+
 
 ;---------------- Memo --------------------
 ; ^ Ctrl
