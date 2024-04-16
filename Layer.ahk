@@ -617,5 +617,15 @@ SC035::{ ; /
                           "{Blind}{SC035}",
                           "{Blind}{F10}")
 }
+*SC01C::
+SC01C::{ ; Enter
+  global g_SC07B
+  if GetKeyState("SC07B","p"){
+    IME_SET(1)
+    g_SC07B := false
+  }else{
+    Send "{Blind}{SC01C}"
+  }
+}
 
 ; End of File
