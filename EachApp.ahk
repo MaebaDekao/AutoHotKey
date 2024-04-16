@@ -10,6 +10,12 @@
   ~Lshift & WheelDown::ComObjActive("PowerPoint.Application").ActiveWindow.SmallScroll(0,0,3,0)
 #HotIf
 
+; Excel
+#HotIf WinActive("ahk_exe EXCEL.EXE")
+  +WheelDown::WheelRight
+  +WheelUp::WheelLeft
+#HotIf
+
 ; Acrobat
 #HotIf WinActive("ahk_exe Acrobat.exe")
   ^LButton::^0
