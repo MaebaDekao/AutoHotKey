@@ -290,7 +290,7 @@ SC00C::{
     Send "{Blind}{F11}"
     g_SC07B := false
   }else{
-    Send "{Blind}{SC027}"
+    Send "{Blind}{SC00C}"
   }
 }
 !SC00D::
@@ -318,16 +318,7 @@ SC010::{ ; q
   global g_SC07B
   if GetKeyState("SC07B","p"){
     g_SC07B := false
-    userInput := InputBox("hogePrompt", "hogeTitle", "w100 h100")
-    if userInput.Result = "Cancel"
-      Goto EndUltraLink
-    else {
-      str_url_base := "https://jira.kmt.kmtg.net:8443/jira/browse/B55-"
-      str_url_add := userInput.Value
-      str_url_combined := str_url_base . str_url_add
-      Run str_url_combined
-    }
-  EndUltraLink:
+    UltraLink
   }else if GetKeyState("SC039","p"){
     global g_SC039
     g_SC039 := false

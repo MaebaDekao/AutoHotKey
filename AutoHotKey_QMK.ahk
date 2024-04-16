@@ -4,8 +4,7 @@
 ;------------------------------------------
 
 #Include IMEv2.ahk
-#Include String.ahk
-#Include Layer.ahk
+#Include EachApp.ahk
 #Include UltraLink.ahk
 #UseHook
 InstallKeybdHook
@@ -14,9 +13,17 @@ Persistent
 ;---------------- debug. ------------------
 
 ;---------------- Hotkey ------------------
-SC070::IME_SET(1) ;日本語入力モード
+F13::IME_SET(0) ;fn + LSpaceBar by QMK
+F14::IME_SET(1) ;fn + RSpaceBar by QMK
+F15::UltraLink ;fn + Q by QMK
+
+;---------------- Mouse -------------------
+MButton::RWin
+XButton2::PgUp ;thumb UP
+XButton1::PgDn ;thumb DOWN
 
 ;----------- Custom Function --------------
+
 
 ;---------------- Memo --------------------
 ; ^ Ctrl
