@@ -9,4 +9,9 @@
   ~Lshift & WheelUp::ComObjActive("PowerPoint.Application").ActiveWindow.SmallScroll(0,0,0,3)
   ~Lshift & WheelDown::ComObjActive("PowerPoint.Application").ActiveWindow.SmallScroll(0,0,3,0)
 #HotIf
+
+; Acrobat
+#HotIf WinActive("ahk_exe Acrobat.exe")
+  ^LButton::^0
+#HotIf
 ; End of File
