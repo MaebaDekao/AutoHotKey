@@ -424,7 +424,7 @@ SC019::{ ; p
 SC01A::{ ; [
   Override_with_layer_key("{Blind}{SC01A}",
                           "{Blind}{SC01A}",
-                          "{Blind}{;}")
+                          "{Blind}{SC00D}")
 }
 *SC01B::
 SC01B::{ ; ]
