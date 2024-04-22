@@ -16,6 +16,17 @@
   +WheelUp::WheelLeft
 #HotIf
 
+; OneNote
+; #HotIf WinActive("ahk_exe ONENOTE.EXE")
+;   *SC02F::{
+;     if GetKeyState("Lshift","p"){
+;       Send "{AppsKey}{T}{Enter}"
+;     }else{
+;       Send "{Blind}{^SC02F}"
+;     }
+;   }
+; #HotIf
+
 ; Acrobat
 #HotIf WinActive("ahk_exe Acrobat.exe")
   ^LButton::^0
