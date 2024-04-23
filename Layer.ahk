@@ -37,14 +37,15 @@ Send_half_size_char(str_key){
 ; Send overridden key by layer key
 ;   Layer1 : without modifier key.
 ;   Layer2 : with Non-Converting  (SC07B)
-;   Layer3 : with Tab key         (SC00F)
-;   Layer4 : with Space           (SC039)
+;   Layer3 : with Space           (SC039)
+;   Layer4 : with Tab key         (SC00F)
 ; arg "org_key"       original key string
 ; arg "ovrd_l2_key"   override key by layer 2
+; arg "ovrd_l3_key"   override key by layer 3
 ; arg "ovrd_l4_key"   override key by layer 4
 ; ret                 none
 ;------------------------------------------
-Override_with_layer_key(org_key, ovrd_l2_key, ovrd_l4_key) {
+Override_with_layer_key(org_key, ovrd_l2_key, ovrd_l3_key, ovrd_l4_key:="") {
   if GetKeyState("SC07B","p"){
     global g_SC07B
     g_SC07B := false
@@ -52,7 +53,13 @@ Override_with_layer_key(org_key, ovrd_l2_key, ovrd_l4_key) {
   }else if GetKeyState("SC039","p"){
     global g_SC039
     g_SC039 := false
-    Send ovrd_l4_key
+    Send ovrd_l3_key
+  }else if GetKeyState("SC00F","p"){
+    if(ovrd_l4_key!=""){
+      Send_half_size_char(ovrd_l4_key)
+    }else{
+      Send org_key
+    }
   }else{
     Send org_key
   }
@@ -63,7 +70,7 @@ Override_with_layer_key(org_key, ovrd_l2_key, ovrd_l4_key) {
 ;-------------- Modifier Key --------------
 g_TapTime := 180
 
-; ---- OneShotModifier of Layer 2 Key
+; ---- OneShotModifier of Layer2 Key
 g_SC07B := false
 SC07B::{ ;無変換キー
   global g_SC07B
@@ -78,22 +85,7 @@ SC07B::{ ;無変換キー
     Send "{Alt Up}"
   }
 }
-
-; ---- OneShotModifier of Layer 3 Key
-;~ g_SC064 := false
-;~ *SC064::{ ;F13(物理的に変換キー, KeyWait "SC079"が原因不明で受け付けられない)
-  ;~ global g_SC064
-  ;~ global g_TapTime
-  ;~ g_SC064 := true
-  ;~ time1 := A_TickCount
-  ;~ KeyWait "SC064"
-  ;~ time2 := A_TickCount - time1
-  ;~ if(time2<g_TapTime && g_SC064){
-    ;~ Send "{Blind}{Enter}"
-  ;~ }
-;~ }
-
-; ---- OneShotModifier of Layer 4 Key
+; ---- OneShotModifier of Layer3 Key
 g_SC039 := false
 *SC039::
 SC039::{ ; Space
@@ -115,20 +107,20 @@ SC039::{ ; Space
   }
 }
 
-;---------------- Layer 3 -----------------
+;---------------- Layer 4 -----------------
 ; TENKEY
-SC00F & SC032::Send_half_size_char("1") ;m
-SC00F & SC033::Send_half_size_char("2") ;,
-SC00F & SC034::Send_half_size_char("3") ;.
-SC00F & SC024::Send_half_size_char("4") ;j
-SC00F & SC025::Send_half_size_char("5") ;k
-SC00F & SC026::Send_half_size_char("6") ;l
-SC00F & SC016::Send_half_size_char("7") ;u
-SC00F & SC017::Send_half_size_char("8") ;i
-SC00F & SC018::Send_half_size_char("9") ;o
-SC00F & SC031::Send_half_size_char("0") ;n
-SC00F & SC035::Send_half_size_char(".") ;/
-SC00F & SC027::Send_half_size_char("-") ;- (physical ;)
+; SC00F & SC032::Send_half_size_char("1") ;m
+; SC00F & SC033::Send_half_size_char("2") ;,
+; SC00F & SC034::Send_half_size_char("3") ;.
+; SC00F & SC024::Send_half_size_char("4") ;j
+; SC00F & SC025::Send_half_size_char("5") ;k
+; SC00F & SC026::Send_half_size_char("6") ;l
+; SC00F & SC016::Send_half_size_char("7") ;u
+; SC00F & SC017::Send_half_size_char("8") ;i
+; SC00F & SC018::Send_half_size_char("9") ;o
+; SC00F & SC031::Send_half_size_char("0") ;n
+; SC00F & SC035::Send_half_size_char(".") ;/
+; SC00F & SC027::Send_half_size_char("-") ;- (physical ;)
 
 ;--------------- Layer 2&4 ----------------
 
@@ -312,9 +304,17 @@ SC00D::{
 
 *SC00F::
 SC00F::{ ; Tab
-  Override_with_layer_key("{Blind}{SC00F}",
-                          "{Blind}{SC00F}",
-                          "{Blind}~")
+  global g_TapTime
+  time1 := A_TickCount
+  KeyWait "SC00F"
+  time2 := A_TickCount - time1
+  if GetKeyState("SC039","p"){
+    global g_SC039
+    g_SC039 := false
+    Send "{Blind}{SC029}"
+  }else if(time2<g_TapTime){
+    Send "{Blind}{SC00F}"
+  }
 }
 *SC010::
 SC010::{ ; q
@@ -377,45 +377,24 @@ SC015::{ ; y
 }
 *SC016::
 SC016::{ ; u
-  global g_SC07B
-  if GetKeyState("SC07B","p"){
-    if GetKeyState("Ctrl", "p"){ ; 3 key at same time
-      Send "^{PgUp}" ; invert for tab manipulate
-    }else{
-      Send "{Blind}{PgDn}"
-    }
-    g_SC07B := false
-  }else if GetKeyState("SC039","p"){
-    global g_SC039
-    g_SC039 := false
-    Send "{Blind}{&}"
-  }else{
-    Send "{Blind}{SC016}"
-  }
+  Override_with_layer_key("{Blind}{SC016}",
+                          "{Blind}{PgDn}",
+                          "{Blind}{&}",
+                          "7")
 }
 *SC017::
 SC017::{ ; i
-  global g_SC07B
-  if GetKeyState("SC07B","p"){
-    if GetKeyState("Ctrl", "p"){ ; 3 key at same time
-      Send "^{PgDn}" ; invert for tab manipulate
-    }else{
-      Send "{Blind}{PgUp}"
-    }
-    g_SC07B := false
-  }else if GetKeyState("SC039","p"){
-    global g_SC039
-    g_SC039 := false
-    Send "{Blind}{*}"
-  }else{
-    Send "{Blind}{SC017}"
-  }
+  Override_with_layer_key("{Blind}{SC017}",
+                          "{Blind}{PgUp}",
+                          "{Blind}{*}",
+                          "8")
 }
 *SC018::
 SC018::{ ; o
   Override_with_layer_key("{Blind}{SC018}",
                           "{Blind}{SC018}",
-                          "{Blind}{(}")
+                          "{Blind}{(}",
+                          "9")
 }
 *SC019::
 SC019::{ ; p
@@ -514,19 +493,22 @@ SC023::{ ; h
 SC024::{ ; j
   Override_with_layer_key("{Blind}{SC024}",
                           "{Blind}{Down}",
-                          "{Blind}{7}")
+                          "{Blind}{7}",
+                          "4")
 }
 *SC025::
 SC025::{ ; k
   Override_with_layer_key("{Blind}{SC025}",
                           "{Blind}{Up}",
-                          "{Blind}{8}")
+                          "{Blind}{8}",
+                          "5")
 }
 *SC026::
 SC026::{ ; l
   Override_with_layer_key("{Blind}{SC026}",
                           "{Blind}{Right}",
-                          "{Blind}{9}")
+                          "{Blind}{9}",
+                          "6")
 }
 *SC027::
 SC027::{ ; - (physical ;)
@@ -594,31 +576,36 @@ SC030::{ ; b
 SC031::{ ; n
   Override_with_layer_key("{Blind}{SC031}",
                           "{Blind}{Home}",
-                          "{Blind}{F6}")
+                          "{Blind}{F6}",
+                          "0")
 }
 *SC032::
 SC032::{ ; m
   Override_with_layer_key("{Blind}{SC032}",
                           "{Blind}^{Left}",
-                          "{Blind}{F7}")
+                          "{Blind}{F7}",
+                          "1")
 }
 *SC033::
 SC033::{ ; ,
   Override_with_layer_key("{Blind}{SC033}",
                           "{Blind}^{Right}",
-                          "{Blind}{F8}")
+                          "{Blind}{F8}",
+                          "2")
 }
 *SC034::
 SC034::{ ; .
   Override_with_layer_key("{Blind}{SC034}",
                           "{Blind}{End}",
-                          "{Blind}{F9}")
+                          "{Blind}{F9}",
+                          "3")
 }
 *SC035::
 SC035::{ ; /
   Override_with_layer_key("{Blind}{SC035}",
                           "{Blind}{SC035}",
-                          "{Blind}{F10}")
+                          "{Blind}{F10}",
+                          ".")
 }
 *SC01C::
 SC01C::{ ; Enter
