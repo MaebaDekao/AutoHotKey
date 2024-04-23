@@ -98,6 +98,14 @@ SC039::{ ; Space
   }else{
     global g_SC039
     g_SC039 := true
+    if(A_PriorHotKey =="SC039" && A_TimeSincePriorHotkey<g_TapTime){
+      Send "{Space down}"
+      Sleep 500
+      While GetKeyState("SC039","p"){
+        Send "{Space down}"
+        Sleep 10
+      }
+    }
     KeyWait "SC039"
     time2 := A_TickCount - time1
     if(time2<g_TapTime && g_SC039){
