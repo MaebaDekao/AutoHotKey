@@ -98,6 +98,8 @@ g_SC039 := false
 *SC039::
 SC039::{ ; Space
   global g_SC07B
+  global g_TapTime
+  time1 := A_TickCount
   if GetKeyState("SC07B","p"){
     IME_SET(0)
     g_SC07B := false
@@ -105,10 +107,11 @@ SC039::{ ; Space
     global g_SC039
     g_SC039 := true
     KeyWait "SC039"
-    if g_SC039 {
+    time2 := A_TickCount - time1
+    if(time2<g_TapTime && g_SC039){
       Send "{Blind}{Space}"
-      g_SC039 := false
     }
+    g_SC039 := false
   }
 }
 
