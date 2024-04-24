@@ -77,15 +77,15 @@ SC07B::{ ;無変換キー
   global g_TapTime
   g_SC07B := true
   time1 := A_TickCount
-  if(A_PriorHotKey =="SC07B" && A_TimeSincePriorHotkey<g_TapTime){
-    Send "{Backspace down}"
-    Sleep 500
-    While GetKeyState("SC07B","p"){
-      Send "{Backspace down}"
-      Sleep 10
-    }
-    Send "{Backspace up}"
-  }
+  ; if(A_PriorHotKey =="SC07B" && A_TimeSincePriorHotkey<g_TapTime){
+  ;   Send "{Backspace down}"
+  ;   Sleep 500
+  ;   While GetKeyState("SC07B","p"){
+  ;     Send "{Backspace down}"
+  ;     Sleep 10
+  ;   }
+  ;   Send "{Backspace up}"
+  ; }
   KeyWait "SC07B"
   time2 := A_TickCount - time1
   if(time2<g_TapTime && g_SC07B){
