@@ -547,7 +547,7 @@ SC028::{ ; '
   if GetKeyState("SC039","p"){
     global g_SC039
     g_SC039 := false
-    Send "{Blind}{:}"
+    Send "{Blind}{SC027}"
   }else if GetKeyState("SC136","p"){
     Send "{SC029}"
   }else{
