@@ -38,7 +38,7 @@ Send_half_size_char(str_key){
 ;   Layer1 : without modifier key.
 ;   Layer2 : with Non-Converting  (SC07B)
 ;   Layer3 : with Space           (SC039)
-;   Layer4 : with Tab key         (SC00F)
+;   Layer4 : with ESC key         (SC001)
 ; arg "org_key"       original key string
 ; arg "ovrd_l2_key"   override key by layer 2
 ; arg "ovrd_l3_key"   override key by layer 3
@@ -54,7 +54,7 @@ Override_with_layer_key(org_key, ovrd_l2_key, ovrd_l3_key, ovrd_l4_key:="") {
     global g_SC039
     g_SC039 := false
     Send ovrd_l3_key
-  }else if GetKeyState("SC00F","p"){
+  }else if GetKeyState("SC001","p"){
     if(ovrd_l4_key!=""){
       Send_half_size_char(ovrd_l4_key)
     }else{
@@ -125,22 +125,7 @@ SC039::{ ; Space
   }
 }
 
-;---------------- Layer 4 -----------------
-; TENKEY
-; SC00F & SC032::Send_half_size_char("1") ;m
-; SC00F & SC033::Send_half_size_char("2") ;,
-; SC00F & SC034::Send_half_size_char("3") ;.
-; SC00F & SC024::Send_half_size_char("4") ;j
-; SC00F & SC025::Send_half_size_char("5") ;k
-; SC00F & SC026::Send_half_size_char("6") ;l
-; SC00F & SC016::Send_half_size_char("7") ;u
-; SC00F & SC017::Send_half_size_char("8") ;i
-; SC00F & SC018::Send_half_size_char("9") ;o
-; SC00F & SC031::Send_half_size_char("0") ;n
-; SC00F & SC035::Send_half_size_char(".") ;/
-; SC00F & SC027::Send_half_size_char("-") ;- (physical ;)
-
-;--------------- Layer 2&4 ----------------
+;--------------- Layer 2,3,4 ----------------
 
 ;---- AHK suspend toggle
 #SuspendExempt
@@ -320,33 +305,26 @@ SC00D::{
 }
 }
 
-*SC00F::
-SC00F::{ ; Tab
-  global g_TapTime
-  time1 := A_TickCount
-  KeyWait "SC00F"
-  time2 := A_TickCount - time1
-  if GetKeyState("SC039","p"){
-    global g_SC039
-    g_SC039 := false
-    Send "{Blind}{SC029}"
-  }else if(time2<g_TapTime){
-    Send "{Blind}{SC00F}"
-  }
-}
+{ ; ---------------- Second Row ----------------
+;*SC00F::
+;SC00F::{ ; Tab
+;}
 *SC010::
 SC010::{ ; q
-  global g_SC07B
-  if GetKeyState("SC07B","p"){
-    g_SC07B := false
-    UltraLink
-  }else if GetKeyState("SC039","p"){
-    global g_SC039
-    g_SC039 := false
-    Send "{Blind}{!}"
-  }else{
-    Send "{Blind}{SC010}"
-  }
+  ; global g_SC07B
+  ; if GetKeyState("SC07B","p"){
+  ;   g_SC07B := false
+  ;   UltraLink
+  ; }else if GetKeyState("SC039","p"){
+  ;   global g_SC039
+  ;   g_SC039 := false
+  ;   Send "{Blind}{!}"
+  ; }else{
+  ;   Send "{Blind}{SC010}"
+  ; }
+  Override_with_layer_key("{Blind}{SC010}",
+                          "{Blind}{SC010}",
+                          "{Blind}{!}")
 }
 *SC011::
 SC011::{ ; w
@@ -418,213 +396,235 @@ SC018::{ ; o
 SC019::{ ; p
   Override_with_layer_key("{Blind}{SC019}",
                           "{Blind}{AppsKey}",
-                          "{Blind}{)}")
+                          "{Blind}{)}",
+                          "{Blind}{/}")
 }
 *SC01A::
-SC01A::{ ; [
-  Override_with_layer_key("{Blind}{SC01A}",
-                          "{Blind}{SC01A}",
+SC01A::{ ; @(JP layout)
+  Override_with_layer_key("{Blind}{SC00D}",
+                          "{Blind}{SC00D}",
                           "{Blind}{SC00D}")
 }
-*SC01B::
-SC01B::{ ; ]
-  Override_with_layer_key("{Blind}{SC01B}",
-                          "{Blind}{SC01B}",
-                          "{Blind}{+}")
+; *SC01B::
+; SC01B::{ ; ]
+;   Override_with_layer_key("{Blind}{SC01B}",
+;                           "{Blind}{SC01B}",
+;                           "{Blind}{+}")
+; }
 }
+
+{ ; ---------------- Third Row ----------------
 *SC01E::
 SC01E::{ ; a
   Override_with_layer_key("{Blind}{SC01E}",
-                          "{Blind}{Backspace}",
+                          "{Blind}{Delete}",
                           "{Blind}{1}")
 }
 *SC01F::
 SC01F::{ ; s
   Override_with_layer_key("{Blind}{SC01F}",
-                          "{Blind}{Delete}",
+                          "{Blind}{F2}",
                           "{Blind}{2}")
 }
 *SC020::
 SC020::{ ; d
-  global g_SC07B
-  if GetKeyState("SC07B","p"){
-    g_SC07B := false
-    if GetKeyState("Alt"){
-      if WinActive("ahk_exe mstsc.exe")
-        Send "{PgDn}"
-      else
-        Send "+{Tab}"
-    }else{
-      if WinActive("ahk_exe mstsc.exe")
-        Send "{Alt Down}{PgDn}"
-      else
-        Send "{Alt Down}+{Tab}"
-    }
-  }else if GetKeyState("SC039","p"){
-    global g_SC039
-    g_SC039 := false
-    if GetKeyState("LWin","p")
-      Send "#{3}"
-    else
-      Send "{Blind}{3}"
-  }else{
-    Send "{Blind}{SC020}"
-  }
+  ; global g_SC07B
+  ; if GetKeyState("SC07B","p"){
+  ;   g_SC07B := false
+  ;   if GetKeyState("Alt"){
+  ;     if WinActive("ahk_exe mstsc.exe")
+  ;       Send "{PgDn}"
+  ;     else
+  ;       Send "+{Tab}"
+  ;   }else{
+  ;     if WinActive("ahk_exe mstsc.exe")
+  ;       Send "{Alt Down}{PgDn}"
+  ;     else
+  ;       Send "{Alt Down}+{Tab}"
+  ;   }
+  ; }else if GetKeyState("SC039","p"){
+  ;   global g_SC039
+  ;   g_SC039 := false
+  ;   if GetKeyState("LWin","p")
+  ;     Send "#{3}"
+  ;   else
+  ;     Send "{Blind}{3}"
+  ; }else{
+  ;   Send "{Blind}{SC020}"
+  ; }
+  Override_with_layer_key("{Blind}{SC020}",
+                          "{Blind}{F3}",
+                          "{Blind}{3}")
 }
 *SC021::
 SC021::{ ; f
-  global g_SC07B
-  if GetKeyState("SC07B","p"){
-    g_SC07B := false
-    if GetKeystate("Alt"){
-      if WinActive("ahk_exe mstsc.exe")
-        Send "{PgUp}"
-      else
-        Send "{Tab Down}{Tab Up}"
-    }else{
-      if WinActive("ahk_exe mstsc.exe")
-        Send "{Alt Down}{PgUp}"
-      else
-        Send "{Alt Down}{Tab Down}{Tab Up}"
-    }
-  }else if GetKeyState("SC039","p"){
-    global g_SC039
-    g_SC039 := false
-    Send "{Blind}{4}"
-  }else{
-    Send "{Blind}{SC021}"
-  }
+  ; global g_SC07B
+  ; if GetKeyState("SC07B","p"){
+  ;   g_SC07B := false
+  ;   if GetKeystate("Alt"){
+  ;     if WinActive("ahk_exe mstsc.exe")
+  ;       Send "{PgUp}"
+  ;     else
+  ;       Send "{Tab Down}{Tab Up}"
+  ;   }else{
+  ;     if WinActive("ahk_exe mstsc.exe")
+  ;       Send "{Alt Down}{PgUp}"
+  ;     else
+  ;       Send "{Alt Down}{Tab Down}{Tab Up}"
+  ;   }
+  ; }else if GetKeyState("SC039","p"){
+  ;   global g_SC039
+  ;   g_SC039 := false
+  ;   Send "{Blind}{4}"
+  ; }else{
+  ;   Send "{Blind}{SC021}"
+  ; }
+  Override_with_layer_key("{Blind}{SC021}",
+                          "{Blind}{F4}",
+                          "{Blind}{4}")
 }
 *SC022::
 SC022::{ ; g
   Override_with_layer_key("{Blind}{SC022}",
-                          "{Blind}{SC022}",
+                          "{Blind}{F5}",
                           "{Blind}{5}")
 }
 *SC023::
 SC023::{ ; h
   Override_with_layer_key("{Blind}{SC023}",
                           "{Blind}{Left}",
-                          "{Blind}{6}")
+                          "{Blind}{|}")
 }
 *SC024::
 SC024::{ ; j
   Override_with_layer_key("{Blind}{SC024}",
                           "{Blind}{Down}",
-                          "{Blind}{7}",
+                          "{Blind}{?}",
                           "4")
 }
 *SC025::
 SC025::{ ; k
   Override_with_layer_key("{Blind}{SC025}",
                           "{Blind}{Up}",
-                          "{Blind}{8}",
+                          "{Blind}{`"}",
                           "5")
 }
 *SC026::
 SC026::{ ; l
   Override_with_layer_key("{Blind}{SC026}",
                           "{Blind}{Right}",
-                          "{Blind}{9}",
+                          "{Blind}{SC01A}",
                           "6")
 }
 *SC027::
-SC027::{ ; - (physical ;)
-  if GetKeyState("SC039","p"){
-    global g_SC039
-    g_SC039 := false
-    Send "{Blind}{0}"
-  }else{
-    if GetKeyState("SC02A","p"){
-      Send_half_size_char("{Blind}{SC00C}")
-    }else{
-      Send "{Blind}{SC00C}" ; -
-    }
-  }
+SC027::{ ; ; (JP layout)
+  ; if GetKeyState("SC039","p"){
+  ;   global g_SC039
+  ;   g_SC039 := false
+  ;   Send "{Blind}{0}"
+  ; }else{
+  ;   if GetKeyState("SC02A","p"){
+  ;     Send_half_size_char("{Blind}{SC00C}")
+  ;   }else{
+  ;     Send "{Blind}{SC00C}" ; -
+  ;   }
+  ; }
+  Override_with_layer_key("{Blind}{SC00C}",
+                          "",
+                          "{Blind}{SC01B}",
+                          "*")
 }
 *SC028::
-SC028::{ ; '
-  if GetKeyState("SC039","p"){
-    global g_SC039
-    g_SC039 := false
-    Send "{Blind}{SC027}"
-  }else if GetKeyState("SC136","p"){
-    Send "{SC029}"
-  }else{
-    Send_half_size_char("{Blind}{SC028}")
-  }
+SC028::{ ; '(JP layout)
+  ; if GetKeyState("SC039","p"){
+  ;   global g_SC039
+  ;   g_SC039 := false
+  ;   Send "{Blind}{SC027}"
+  ; }else if GetKeyState("SC136","p"){
+  ;   Send "{SC029}"
+  ; }else{
+  ;   Send_half_size_char("{Blind}{SC028}")
+  ; }
+  Override_with_layer_key("{Blind}{SC027}",
+                          "",
+                          "")
 }
 *SC02B::
-SC02B::{ ; \
+SC02B::{ ; ](JP layout)
   Override_with_layer_key("{Blind}{SC02B}",
-                          "{Blind}{SC02B}",
-                          "{Blind}{=}")
+                          "",
+                          "")
 }
+}
+
+{ ; ---------------- Fourth Row ----------------
 *SC02C::
 SC02C::{ ; z
   Override_with_layer_key("{Blind}{SC02C}",
-                          "{Blind}{SC02C}",
-                          "{Blind}{F1}")
+                          "{Blind}{F6}",
+                          "{Blind}{6}")
 }
 *SC02D::
 SC02D::{ ; x
   Override_with_layer_key("{Blind}{SC02D}",
-                          "{Blind}^+{Tab}",
-                          "{Blind}{F2}")
+                          "{Blind}{F7}",
+                          "{Blind}{7}")
 }
 *SC02E::
 SC02E::{ ; c
   Override_with_layer_key("{Blind}{SC02E}",
-                          "{Blind}^{Tab}",
-                          "{Blind}{F3}")
+                          "{Blind}{F8}",
+                          "{Blind}{8}")
 }
 *SC02F::
 SC02F::{ ; v
   Override_with_layer_key("{Blind}{SC02F}",
-                          "{Blind}{SC02F}",
-                          "{Blind}{F4}")
+                          "{Blind}{F9}",
+                          "{Blind}{9}")
 }
 *SC030::
 SC030::{ ; b
   Override_with_layer_key("{Blind}{SC030}",
-                          "{Blind}{SC030}",
-                          "{Blind}{F5}")
+                          "{Blind}{F10}",
+                          "{Blind}{0}")
 }
 *SC031::
 SC031::{ ; n
   Override_with_layer_key("{Blind}{SC031}",
                           "{Blind}{Home}",
-                          "{Blind}{F6}",
+                          "{Blind}{\}",
                           "0")
 }
 *SC032::
 SC032::{ ; m
   Override_with_layer_key("{Blind}{SC032}",
                           "{Blind}^{Left}",
-                          "{Blind}{F7}",
+                          "{Blind}{/}",
                           "1")
 }
 *SC033::
 SC033::{ ; ,
   Override_with_layer_key("{Blind}{SC033}",
                           "{Blind}^{Right}",
-                          "{Blind}{F8}",
+                          "{Blind}{'}",
                           "2")
 }
 *SC034::
 SC034::{ ; .
   Override_with_layer_key("{Blind}{SC034}",
                           "{Blind}{End}",
-                          "{Blind}{F9}",
+                          "{Blind}{~}",
                           "3")
 }
 *SC035::
 SC035::{ ; /
   Override_with_layer_key("{Blind}{SC035}",
-                          "{Blind}{SC035}",
-                          "{Blind}{F10}",
+                          "",
+                          "{Blind}{``}",
                           ".")
 }
+}
+
 *SC01C::
 SC01C::{ ; Enter
   global g_SC07B
