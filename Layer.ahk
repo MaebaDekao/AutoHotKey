@@ -635,5 +635,11 @@ SC01C::{ ; Enter
     Send "{Blind}{SC01C}"
   }
 }
+*SC070::
+SC070::{ ; KANA(JP layout)
+  Override_with_layer_key("{Blind}{F10}",
+                          "",
+                          "")
+}
 
 ; End of File
