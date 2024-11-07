@@ -1,4 +1,10 @@
 ﻿;-------- Each App --------
+; Explorer
+#HotIf WinActive("ahk_exe explorer.exe")
+^PgUp::^+Tab
+^PgDn::^Tab
+#HotIf
+
 ; Line
 #HotIf WinActive("ahk_exe LINE.exe")
   ^Enter::!Enter
