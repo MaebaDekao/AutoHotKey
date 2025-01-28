@@ -11,10 +11,23 @@
 InstallKeybdHook
 Persistent
 
+Suspend
+
 ;---------------- debug. ------------------
 
 ;---------------- Hotkey ------------------
 SC070::F10
+;---- AHK suspend toggle
+#SuspendExempt
+F15::{ ; CSTC Top Right(DEL) key
+    Suspend
+    if A_IsSuspended{
+      MsgBox "Suspend"
+    }else{
+      MsgBox "Restart"
+    }
+}
+#SuspendExempt False
 
 ;----------- OneShotModifier --------------
 Lshift::{

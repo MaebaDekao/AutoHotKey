@@ -15,7 +15,6 @@ Persistent
 ;---------------- Hotkey ------------------
 F13::IME_SET(0) ;fn + LSpaceBar by QMK
 F14::IME_SET(1) ;fn + RSpaceBar by QMK
-F15::UltraLink ;fn + Q by QMK
 
 ;---------------- Mouse -------------------
 MButton::RWin
